@@ -1,9 +1,20 @@
 <template>
-  <input class="todo-input" />
+  <input
+    :value="value"
+    :placeholder="placeholder"
+    @change="$emit('on-change', $event)"
+    class="todo-input"
+  />
 </template>
 
 <script lang="ts">
-export default {}
+export default {
+  emits: ['on-change'],
+  props: {
+    placeholder: String,
+    value: String
+  }
+}
 </script>
 
 <style scoped>

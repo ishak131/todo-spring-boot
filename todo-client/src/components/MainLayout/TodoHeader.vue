@@ -6,7 +6,7 @@
     </nav>
     <div class="actions">
       <TodoButton
-        :onClick="
+        @on-click="
           () => {
             console.log('clicked')
           }
@@ -14,7 +14,7 @@
         text="Login"
       />
       <TodoButton
-        :onClick="
+        @on-click="
           () => {
             console.log('clicked')
           }

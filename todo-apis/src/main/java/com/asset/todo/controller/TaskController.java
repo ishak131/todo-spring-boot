@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/projects/{projectId}/tasks")
 public class TaskController {
     @Autowired
@@ -30,8 +31,8 @@ public class TaskController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TaskModel>> getAllTasks() {
-        List<TaskModel> tasks = taskService.getAllTasks();
+    public ResponseEntity<List<TaskModel>> getAllTasks(@PathVariable Long projectId) {
+        List<TaskModel> tasks = taskService.getTasksByProjectId(projectId);
         return ResponseEntity.ok(tasks);
     }
 

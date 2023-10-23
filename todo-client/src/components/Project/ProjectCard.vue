@@ -1,16 +1,41 @@
 <template>
-  <div class="card"  >
+  <div
+    @click="
+      () => {
+        router.push('/project-tasks/' + props.project.id)
+      }
+    "
+    v-if="!isDeleted"
+    class="card"
+  >
     <div class="title-and-delete">
-      <h2 class="title">title</h2>
-      <DeleteButton :onClick="()=>{console.log('delete');
-      }" />
+      <h2 class="title">{{ props.project.title }}</h2>
+      <DeleteButton @on-click="deleteProject" />
     </div>
-    <p class="description">this is the project description</p>
+    <p class="description">{{ props.project.description }}</p>
   </div>
 </template>
 
 <script setup lang="ts">
+import { authorizedApis } from '@/api/axiosSetup'
 import DeleteButton from '../Button/DeleteButton.vue'
+import { ref } from 'vue'
+import router from '@/router'
+
+const isDeleted = ref(false)
+const props = defineProps(['project'])
+
+const deleteProject = (event:Event) => {
+  event.stopPropagation()
+  authorizedApis
+    .delete(`/projects/${props.project.id}`)
+    .then((res) => {
+      isDeleted.value = true
+    })
+    .catch((err) => {
+      console.log({ err })
+    })
+}
 </script>
 
 <style scoped>
@@ -30,6 +55,7 @@ import DeleteButton from '../Button/DeleteButton.vue'
   color: var(--primary);
   font-size: 24px;
   margin: 0;
+  padding-right: 15px;
 }
 
 .description {

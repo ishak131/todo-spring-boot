@@ -1,41 +1,62 @@
 <template>
   <div class="page projects">
-    <ProjectCard v-for="(project, index) in projects" :title="project" :key="index" />
+    <ProjectCard v-for="(project, index) in projects" :project="project" :key="index" />
     <form class="add-project">
-      <TodoInput type="text" />
+      <TodoInput
+        :value="projectTitle"
+        type="text"
+        placeholder="Project Title"
+        @on-change="onProjectTitleChange"
+      />
       <TodoButton @on-click="addNewProject" text="Add" />
     </form>
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import ProjectCard from '../components/Project/ProjectCard.vue'
 import TodoButton from '../components/Button/TodoButton.vue'
 import TodoInput from '../components/Input/TodoInput.vue'
-import { ref } from 'vue'
-export default {
-  components: {
-    ProjectCard,
-    TodoButton,
-    TodoInput
-  },
-  // `setup` is a special hook dedicated for the Composition API.
-  setup() {
-    const projects = ref([1, 2, 3, 4, 5, 6, 7, 8])
+import { authorizedApis } from '../api/axiosSetup'
+import { onMounted, reactive, ref } from 'vue'
 
-    const addNewProject = (event: any) => {
-      console.log(event)
+const projects = reactive<any[]>([])
+const projectTitle = ref('')
 
-      event.preventDefault()
-      projects.value.push(2)
-      console.log('project is added')
-    }
-    // expose the ref to the template
-    return {
-      projects,
-      addNewProject
-    }
-  }
+onMounted(() => {
+  getProjects()
+})
+
+const onProjectTitleChange = (event: any) => {
+  projectTitle.value = event.target.value
+}
+
+const getProjects = () => {
+  authorizedApis
+    .get('/projects')
+    .then((res) => {
+      projects.splice(0, projects.length)
+      projects.push(...res.data)
+    })
+    .catch((err) => {
+      console.log({ err })
+    })
+}
+
+const addNewProject = (event: any) => {
+  event.preventDefault()
+  authorizedApis
+    .post('/projects', {
+      title: projectTitle.value,
+      description: 'description of: ' + projectTitle.value
+    })
+    .then((res) => {
+      getProjects()
+      projectTitle.value = ''
+    })
+    .catch((err) => {
+      console.log({ err })
+    })
 }
 </script>
 
@@ -62,6 +83,6 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 40px 20px;
+  padding: 20px 20px;
 }
 </style>
