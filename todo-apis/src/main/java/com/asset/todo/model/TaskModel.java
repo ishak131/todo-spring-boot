@@ -3,6 +3,8 @@ package com.asset.todo.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Table(name = "task")
 @Entity
@@ -23,6 +25,8 @@ public class TaskModel {
     @JoinColumn(name = "project_id")
     private ProjectModel project;
 
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    private Set<CategoryModel> categories = new HashSet<>();
     public String getTitle() {
         return title;
     }
@@ -57,6 +61,14 @@ public class TaskModel {
 
     public Long getId() {
         return id;
+    }
+
+    public Set<CategoryModel> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<CategoryModel> categories) {
+        this.categories = categories;
     }
 }
 

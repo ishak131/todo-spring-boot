@@ -25,6 +25,10 @@ public class ProjectService {
         return projectRepository.findAll();
     }
 
+    public List<ProjectModel> getProjectsByUserId(String userId) {
+        return projectRepository.findAll();
+    }
+
     public Optional<ProjectModel> getProjectById(Long projectId) {
         return projectRepository.findById(projectId);
     }

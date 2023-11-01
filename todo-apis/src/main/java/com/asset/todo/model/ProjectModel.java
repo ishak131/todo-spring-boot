@@ -1,5 +1,6 @@
 package com.asset.todo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.List;
 @Table(name = "project")
@@ -16,6 +17,13 @@ public class ProjectModel {
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<TaskModel> tasks;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "user_id" )
+    private UserModel user;
+
+
 
 
     public String getTitle() {
@@ -41,5 +49,13 @@ public class ProjectModel {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public UserModel getUser() {
+        return user;
+    }
+
+    public void setUser(UserModel user) {
+        this.user = user;
     }
 }

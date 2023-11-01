@@ -13,13 +13,15 @@ body {
 }
 
 .page {
+  height: calc(100vh - 60px);
 }
+
+
 
 main {
   margin-top: 60px;
   max-width: 1440px;
 }
-
 
 /* width */
 ::-webkit-scrollbar {
@@ -29,20 +31,15 @@ main {
 /* Track */
 ::-webkit-scrollbar-track {
   background: #f1f1f1;
-  
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background: var(--primary);
   border-radius: 5px;
-
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: var(--secondary);
-
 }
-
-

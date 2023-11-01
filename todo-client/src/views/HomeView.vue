@@ -1,5 +1,5 @@
 <template>
-  <div class="home-page">
+  <div class="home-page flex">
     <h1 class="welcome">
       Welcome to <br />
       Todo List by Asset Technology Group
